@@ -7,7 +7,7 @@
 pod 'YXYKeyChainManager', '~> 0.0.1'
 ```
 
-二、API
+二、API简介
 ```
 
 /**
@@ -41,4 +41,19 @@ pod 'YXYKeyChainManager', '~> 0.0.1'
  @param service 数据存储时的标示
  */
 + (void)deleteKeyData:(NSString *)service;
+```
+
+三、API使用示例
+```
+#pragma mark - 获取本地存储的uuid，如果尚未存储则取出uuid存储
++ (NSString *)uuid {
+    static NSString * const IDFVKEY = @"PrivilegeGoIDFV";
+    NSString *uuid = (NSString *)[YXYKeyChainManager load:IDFVKEY];
+    if ([uuid isEqualToString:@""] || !uuid) {
+        uuid = [UIDevice currentDevice].identifierForVendor.UUIDString;
+        uuid = [uuid stringByReplacingOccurrencesOfString:@"-" withString:@""];
+        [YXYKeyChainManager save:IDFVKEY data:uuid];
+    }
+    return uuid;
+}
 ```
